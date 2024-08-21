@@ -29,7 +29,7 @@ class statsObj {
   }
   set baseCritAdder(v) {
     if (this.#linkNode)
-      this.#linkNode.setAttribute("critdmg", (Math.pow(2,this.#lvlCritEvolve)*v+Math.pow(2,this.#lvlCritEvolve)-1)*100+100);
+      this.#linkNode.setAttribute("critdmg", (Math.pow(2,this.#lvlCritEvolve)*(v+1))*100);
     if (this.#linkObj)
       this.#linkObj.baseCritAdder += v - this.#baseCritAdder;
     return this.#baseCritAdder = v;
@@ -60,7 +60,7 @@ class statsObj {
   set lvlCritEvolve(v) {
     if (this.#linkNode) {
       this.#linkNode.setAttribute("critchance", (this.#baseCritChance/Math.pow(2,v))*100);
-      this.#linkNode.setAttribute("critdmg", (Math.pow(2,v)*this.#baseCritAdder+Math.pow(2,v)-1)*100+100);
+      this.#linkNode.setAttribute("critdmg", (Math.pow(2,v)*(this.#baseCritAdder+1))*100);
     }
     if (this.#linkObj)
       this.#linkObj.lvlCritEvolve += v - this.#lvlCritEvolve;
@@ -81,7 +81,7 @@ class statsObj {
   }
   set lvlFlatDmg(v) {
     if (this.#linkNode)
-      this.#linkNode.setAttribute("flatdmg", v);
+      this.#linkNode.setAttribute("flatdmg", v*0.5+(v>0)*0.5);
     if (this.#linkObj)
       this.#linkObj.lvlFlatDmg += v - this.#lvlFlatDmg;
     return this.#lvlFlatDmg = v;

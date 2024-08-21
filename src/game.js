@@ -9,25 +9,36 @@ const game = (function(){
     <game-upgrades></game-upgrades>
   `;
   class Game extends HTMLElement {
-    moneyInLastSecond=0
-    deltaArray=[0,0,0,0,0,0,0,0,0,0]
+    moneyInLastSecondMain=0
+    moneyInLastSecondAuto=0
+    deltaArrayMain=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    deltaArrayAuto=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     maxClickDmg=0
+    mpsMain=0
+    mpsAuto=0
     STATS = new statsObj()
     connectedCallback(){
-      const shadow = this.attachShadow({mode: 'open'});
-      shadow.innerHTML = shadowDOM;
+      this.shadow = this.attachShadow({mode: 'open'});
+      this.shadow.innerHTML = shadowDOM;
     }
   }
 
-  Game.prototype.onEnemyClick = function (enemy) {
-    let dmg = 
-      this.STATS.baseDmg*(
-        1 + (Math.random()<this.STATS.baseCritChance/Math.pow(2,this.STATS.lvlCritEvolve))
-        *(this.STATS.baseCritAdder*Math.pow(2,this.STATS.lvlCritEvolve)
-        +(Math.pow(2,this.STATS.lvlCritEvolve)-1)))
-        +this.STATS.lvlFlatDmg;
+  Game.prototype.onEnemyClick = function (args = {}) {
+    let dmg = this.STATS.baseDmg;
+    if (Math.random()<this.STATS.baseCritChance/Math.pow(2,this.STATS.lvlCritEvolve)) {
+      dmg *=(1 + (this.STATS.baseCritAdder))*Math.pow(2,this.STATS.lvlCritEvolve);
+      args.type = "crit";
+    }
+    if (args.type=="main" && this.STATS.lvlFlatDmg) {
+      dmg += (this.STATS.lvlFlatDmg*0.5+0.5)*(this.mpsAuto + this.mpsMain)/100;
+    }
     this.STATS.money += dmg;
-    this.moneyInLastSecond += dmg;
+    if (args.type=="main" || args.type=="crit") {
+      this.moneyInLastSecondMain += dmg;
+    }
+    if (args.type=="auto") {
+      this.moneyInLastSecondAuto += dmg;
+    }
     if (dmg>this.maxClickDmg) {
       this.maxClickDmg = dmg;
       this.STATS.linkNode.setAttribute('maxclk', this.maxClickDmg);
@@ -36,22 +47,54 @@ const game = (function(){
 
   setInterval(()=>{
     for (let i = 0; i < document.querySelector("game-main").STATS.lvlAutoClk; i++) {
-      document.querySelector("game-main").onEnemyClick();
+      document.querySelector("game-main").onEnemyClick({type:"auto", enemy:document.querySelector("game-main").shadow.querySelector("game-enemy")});
     }
-    document.querySelector("game-main").deltaArray = document.querySelector("game-main").deltaArray.slice(1).concat([document.querySelector("game-main").moneyInLastSecond]);
-    document.querySelector("game-main").STATS.linkNode.setAttribute("mps", 
-      (document.querySelector("game-main").deltaArray[0] + 
-      document.querySelector("game-main").deltaArray[1] + 
-      document.querySelector("game-main").deltaArray[2] + 
-      document.querySelector("game-main").deltaArray[3] + 
-      document.querySelector("game-main").deltaArray[4] + 
-      document.querySelector("game-main").deltaArray[5] + 
-      document.querySelector("game-main").deltaArray[6] + 
-      document.querySelector("game-main").deltaArray[7] + 
-      document.querySelector("game-main").deltaArray[8] + 
-      document.querySelector("game-main").deltaArray[9] )/10
-    );
-    document.querySelector("game-main").moneyInLastSecond = 0;
+    document.querySelector("game-main").deltaArrayMain = document.querySelector("game-main").deltaArrayMain.slice(1).concat([document.querySelector("game-main").moneyInLastSecondMain]);
+    document.querySelector("game-main").mpsMain = (document.querySelector("game-main").deltaArrayMain[0] + 
+    document.querySelector("game-main").deltaArrayMain[1] + 
+    document.querySelector("game-main").deltaArrayMain[2] + 
+    document.querySelector("game-main").deltaArrayMain[3] + 
+    document.querySelector("game-main").deltaArrayMain[4] + 
+    document.querySelector("game-main").deltaArrayMain[5] + 
+    document.querySelector("game-main").deltaArrayMain[6] + 
+    document.querySelector("game-main").deltaArrayMain[7] + 
+    document.querySelector("game-main").deltaArrayMain[8] + 
+    document.querySelector("game-main").deltaArrayMain[9] +
+    document.querySelector("game-main").deltaArrayMain[10] +
+    document.querySelector("game-main").deltaArrayMain[11] + 
+    document.querySelector("game-main").deltaArrayMain[12] + 
+    document.querySelector("game-main").deltaArrayMain[13] + 
+    document.querySelector("game-main").deltaArrayMain[14] + 
+    document.querySelector("game-main").deltaArrayMain[15] + 
+    document.querySelector("game-main").deltaArrayMain[16] + 
+    document.querySelector("game-main").deltaArrayMain[17] + 
+    document.querySelector("game-main").deltaArrayMain[18] + 
+    document.querySelector("game-main").deltaArrayMain[19] )/20;
+    document.querySelector("game-main").STATS.linkNode.setAttribute("mpsmain", document.querySelector("game-main").mpsMain);
+    document.querySelector("game-main").moneyInLastSecondMain = 0;
+    document.querySelector("game-main").deltaArrayAuto = document.querySelector("game-main").deltaArrayAuto.slice(1).concat([document.querySelector("game-main").moneyInLastSecondAuto]);
+    document.querySelector("game-main").mpsAuto = (document.querySelector("game-main").deltaArrayAuto[0] + 
+    document.querySelector("game-main").deltaArrayAuto[1] + 
+    document.querySelector("game-main").deltaArrayAuto[2] + 
+    document.querySelector("game-main").deltaArrayAuto[3] + 
+    document.querySelector("game-main").deltaArrayAuto[4] + 
+    document.querySelector("game-main").deltaArrayAuto[5] + 
+    document.querySelector("game-main").deltaArrayAuto[6] + 
+    document.querySelector("game-main").deltaArrayAuto[7] + 
+    document.querySelector("game-main").deltaArrayAuto[8] + 
+    document.querySelector("game-main").deltaArrayAuto[9] +
+    document.querySelector("game-main").deltaArrayAuto[10] +
+    document.querySelector("game-main").deltaArrayAuto[11] + 
+    document.querySelector("game-main").deltaArrayAuto[12] + 
+    document.querySelector("game-main").deltaArrayAuto[13] + 
+    document.querySelector("game-main").deltaArrayAuto[14] + 
+    document.querySelector("game-main").deltaArrayAuto[15] + 
+    document.querySelector("game-main").deltaArrayAuto[16] + 
+    document.querySelector("game-main").deltaArrayAuto[17] + 
+    document.querySelector("game-main").deltaArrayAuto[18] + 
+    document.querySelector("game-main").deltaArrayAuto[19] )/20;
+    document.querySelector("game-main").STATS.linkNode.setAttribute("mpsauto", document.querySelector("game-main").mpsAuto);
+    document.querySelector("game-main").moneyInLastSecondAuto = 0;
   }, 1000)
   return Game;
 })()

@@ -18,7 +18,7 @@ const enemy = (function(){
       shadow.addEventListener('click', ()=>{this.onclick()});
     }
     onclick() {
-      this.getRootNode().host.onEnemyClick(this);
+      this.getRootNode().host.onEnemyClick({enemy:this, type:"main"});
     }
   }
 

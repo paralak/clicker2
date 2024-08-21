@@ -241,7 +241,7 @@ const gameUpgradesFlatDmg = (function(){
       }
     </style>
     <div>
-      Flat Dmg <span id="lvl">0</span> cost: <span id="cost">1 000</span>
+      Flat Dmg <span id="lvl">0</span> cost: <span id="cost">100 000</span>
     </div>
   `;
 
@@ -263,7 +263,7 @@ const gameUpgradesFlatDmg = (function(){
   }
 
   Flat.prototype.costByLvl = function (lvl) {
-    return Math.floor(Math.pow(lvl+1,1.2))*1000;
+    return Math.pow(5,lvl)*100000;
   }
 
 
