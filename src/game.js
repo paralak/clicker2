@@ -30,7 +30,7 @@ const game = (function(){
       args.type = "crit";
     }
     if (args.type=="main" && this.STATS.lvlFlatDmg) {
-      dmg += (this.STATS.lvlFlatDmg*0.5+0.5)*(this.mpsAuto + this.mpsMain)/100;
+      dmg += (this.STATS.lvlFlatDmg*5+5)*(this.mpsAuto)/100;
     }
     this.STATS.money += dmg;
     if (args.type=="main" || args.type=="crit") {

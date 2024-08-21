@@ -81,7 +81,7 @@ class statsObj {
   }
   set lvlFlatDmg(v) {
     if (this.#linkNode)
-      this.#linkNode.setAttribute("flatdmg", v*0.5+(v>0)*0.5);
+      this.#linkNode.setAttribute("flatdmg", v*5+(v>0)*5);
     if (this.#linkObj)
       this.#linkObj.lvlFlatDmg += v - this.#lvlFlatDmg;
     return this.#lvlFlatDmg = v;
