@@ -25,9 +25,10 @@ const game = (function(){
 
   Game.prototype.onEnemyClick = function (args = {}) {
     let dmg = this.STATS.baseDmg;
+    args.isCrit = false
     if (Math.random()<this.STATS.baseCritChance/Math.pow(2,this.STATS.lvlCritEvolve)) {
       dmg *=(1 + (this.STATS.baseCritAdder))*Math.pow(2,this.STATS.lvlCritEvolve);
-      args.type = "crit";
+      args.isCrit = true;
     }
     if (args.type=="main" && this.STATS.lvlFlatDmg) {
       dmg += (this.STATS.lvlFlatDmg*5+5)*(this.mpsAuto)/100;
