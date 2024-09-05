@@ -35,13 +35,13 @@ const gameUpgradesAttack = (function(){
         border: 1px solid #555;
         border-radius: 5px;
         height: 25px;
-        width: 250px;
+        width: 350px;
         padding: 2px;
         user-select: none;
       }
     </style>
     <div>
-      Attack <span id="lvl">1</span> cost: <span id="cost">10</span>
+      Attack <span id="lvl">1</span> cost: <span id="cost">10</span>r click count > <span id="clkc">10</span>
     </div>
   `;
 
@@ -54,12 +54,16 @@ const gameUpgradesAttack = (function(){
   }
 
   Attack.prototype.tryUpgrade = function () {
-    if (this.costByLvl(document.querySelector("game-main").STATS.lvlBaseDmg) <= document.querySelector("game-main").STATS.money) {
+    if (
+      this.costByLvl(document.querySelector("game-main").STATS.lvlBaseDmg) <= document.querySelector("game-main").STATS.money &&
+      document.querySelector("game-main").STATS.lvlBaseDmg*10 <= document.querySelector("game-main").STATS.totalClick
+    ) {
       document.querySelector("game-main").STATS.money -= this.costByLvl(document.querySelector("game-main").STATS.lvlBaseDmg);
       document.querySelector("game-main").STATS.baseDmg += 1+Math.pow(Math.floor(Math.log2(document.querySelector("game-main").STATS.lvlBaseDmg/10+1)),1);
       document.querySelector("game-main").STATS.lvlBaseDmg += 1;
       this.shadow.querySelector("#cost").innerText = new Intl.NumberFormat("ru-RU").format(this.costByLvl(document.querySelector("game-main").STATS.lvlBaseDmg));
       this.shadow.querySelector("#lvl").innerText = document.querySelector("game-main").STATS.lvlBaseDmg;
+      this.shadow.querySelector("#clkc").innerText = document.querySelector("game-main").STATS.lvlBaseDmg*10;
     }
   }
 
@@ -84,13 +88,13 @@ const gameUpgradesCrit = (function(){
         border: 1px solid #555;
         border-radius: 5px;
         height: 25px;
-        width: 250px;
+        width: 350px;
         padding: 2px;
         user-select: none;
       }
     </style>
     <div>
-      Crit <span id="lvl">0</span> cost: <span id="cost">100</span>
+      Crit <span id="lvl">0</span> cost: <span id="cost">100</span>r
     </div>
   `;
 
@@ -139,13 +143,13 @@ const gameUpgradesCritEvolve = (function(){
         border: 1px solid #555;
         border-radius: 5px;
         height: 25px;
-        width: 250px;
+        width: 350px;
         padding: 2px;
         user-select: none;
       }
     </style>
     <div>
-      Crit evolve <span id="lvl">0</span> cost: <span id="cost">20 000</span>
+      Crit evolve <span id="lvl">0</span> cost: <span id="cost">20 000</span>r
     </div>
   `;
 
@@ -187,13 +191,13 @@ const gameUpgradesAutoClk = (function(){
         border: 1px solid #555;
         border-radius: 5px;
         height: 25px;
-        width: 250px;
+        width: 350px;
         padding: 2px;
         user-select: none;
       }
     </style>
     <div>
-      Auto clk <span id="lvl">0</span> cost: <span id="cost">5</span>
+      Auto clk <span id="lvl">0</span> cost: <span id="cost">5</span>r
     </div>
   `;
 
@@ -235,13 +239,13 @@ const gameUpgradesFlatDmg = (function(){
         border: 1px solid #555;
         border-radius: 5px;
         height: 25px;
-        width: 250px;
+        width: 350px;
         padding: 2px;
         user-select: none;
       }
     </style>
     <div>
-      Flat Dmg <span id="lvl">0</span> cost: <span id="cost">100 000</span>
+      Flat Dmg <span id="lvl">0</span> cost: <span id="cost">100 000</span>r
     </div>
   `;
 

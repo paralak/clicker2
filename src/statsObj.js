@@ -12,6 +12,9 @@ class statsObj {
   #lvlCritEvolve = 0
   #lvlFlatDmg = 0
   #lvlAutoClk = 0
+  enemyReward = 0.1
+  #totalClicks = 0
+  #orb = 0
 
 
   get money() {
@@ -23,6 +26,16 @@ class statsObj {
     if (this.#linkObj)
       this.#linkObj.money += v - this.#money;
     return this.#money = v;
+  }
+  get orb() {
+    return this.#orb;
+  }
+  set orb(v) {
+    if (this.#linkNode)
+      this.#linkNode.setAttribute("orb", v);
+    if (this.#linkObj)
+      this.#linkObj.orb += v - this.#orb;
+    return this.#orb = v;
   }
   get baseCritAdder() {
     return this.#baseCritAdder;
@@ -122,6 +135,16 @@ class statsObj {
     v.money += this.money;
     v.lvlBaseDmg += this.lvlBaseDmg;
     return this.#linkObj = v;
+  }
+  get totalClick() {
+    return this.#totalClicks;
+  }
+  set totalClick(v) {
+    if (this.#linkNode)
+      this.#linkNode.setAttribute("totalclick", v);
+    if (this.#linkObj)
+      this.#linkObj.totalClick += v - this.#totalClicks;
+    return this.#totalClicks = v;
   }
   deleteLinkWithObj() {
     if (!this.#linkObj) return -1;
